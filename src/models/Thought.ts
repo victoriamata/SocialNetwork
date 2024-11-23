@@ -6,6 +6,7 @@ interface IThought extends Document{
   createdAt: Date;
   username: Schema.Types.ObjectId;
   reactions: typeof reaction[]; 
+  reactionCount: number; 
 }
 
 const thoughts = new Schema<IThought>(
