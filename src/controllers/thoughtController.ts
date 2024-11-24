@@ -65,8 +65,10 @@ export const updateThought = async (req: Request, res: Response) => {
     }
 
     res.json(thought);
+    return;
   } catch (err) {
     res.status(500).json(err);
+    return;
   }
 }
 
@@ -89,8 +91,10 @@ export const deleteThought = async (req: Request, res: Response) => {
     }
 
     res.json({ message: 'Thought successfully deleted' });
+    return;
   } catch (err) {
     res.status(500).json(err);
+    return;
   }
 }
 
@@ -107,8 +111,10 @@ export const addThoughtReaction = async (req: Request, res: Response) => {
     }
 
     res.json(thought);
+    return;
   } catch (err) {
     res.status(500).json(err);
+    return;
   }
 };
 
@@ -125,7 +131,9 @@ export const removeThoughtReaction = async (req: Request, res: Response) => {
     }
 
     res.json(thought);
+    return;
   } catch (err) {
     res.status(500).json(err);
+    return;
   }
 };

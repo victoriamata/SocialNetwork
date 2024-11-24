@@ -63,11 +63,7 @@ import { Request, Response } from 'express';
 
   export const createFriend = async (req:Request, res: Response) => {
     try {
-      const friend = await User.findOneAndUpdate({ _id: req.params.userId },
-        { _id: req.params.userId },
-        { $addToSet: { friends: req.params.friendId } },
-        { runValidators: true, new: true }
-      );
+      const friend = await User.findOneAndUpdate({email:req.body.email}, req.body);
 
         if (!friend) {
           res.status(404).json({ message: 'User not found by ID' });
