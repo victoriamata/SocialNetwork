@@ -1,55 +1,56 @@
-import { Schema, Document, model } from 'mongoose';
+import { Schema, Document, model } from "mongoose";
 
+// Define TS interface
 interface IUser extends Document {
   username: String;
   email: String;
-  thoughts: Schema.Types.ObjectId[];
-  friends: Schema.Types.ObjectId[];
-  friendCount: number; 
+  thoughts: Schema.Types.ObjectId[]; // Array references user's thoughts
+  friends: Schema.Types.ObjectId[]; // Array references user's friends
+  friendCount: number; // Virtual property representing the number of friends
 }
 
+// Define user schema
 const userSchema = new Schema<IUser>(
   {
     username: {
       type: String,
       unique: true,
       required: true,
-      trim: true,
+      trim: true, // Removes extra whitespace from the input
     },
     email: {
       type: String,
-      required: [true, 'Email required'],
+      required: [true, "Email required"],
       unique: true,
-      match: [/.+@.+\..+/],
+      match: [/.+@.+\..+/], //Regex; validates format
     },
     thoughts: [
       {
         type: Schema.Types.ObjectId,
-        ref: 'thoughts',
+        ref: "thoughts", // Ref thoughts collection
       },
     ],
     friends: [
       {
         type: Schema.Types.ObjectId,
-        ref: 'users',
+        ref: "users",
       },
     ],
   },
   {
-   
     toJSON: {
-      virtuals: true,
+      virtuals: true, // Include virtual properties when converting the schema to JSON
     },
-    _id: false,
+    _id: false, // Exclude the automatic _id field
   }
 );
 
-userSchema
-  .virtual('friendCount')
-  .get(function () {
-    return this.friends.length;
-  });
+// Define a virtual property 'friendCount' to calculate the number of friends
+userSchema.virtual("friendCount").get(function () {
+  return this.friends.length;
+});
 
-const User = model('users', userSchema);
+// Create a Mongoose model named 'users' based on the User schema
+const User = model("users", userSchema);
 
 export default User;

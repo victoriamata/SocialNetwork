@@ -1,49 +1,51 @@
-import { Schema, model, Document } from 'mongoose';
-import reaction from './Reaction.js';
+import { Schema, model, Document } from "mongoose";
+import reaction from "./Reaction.js";
 
-interface IThought extends Document{
+// Define the TypeScript interface for a Thought document, extending Mongoose's Document
+interface IThought extends Document {
   thoughtText: String;
   createdAt: Date;
-  username: Schema.Types.ObjectId;
-  reactions: typeof reaction[]; 
-  reactionCount: number; 
+  username: Schema.Types.ObjectId; // Reference to the user who created the thought
+  reactions: (typeof reaction)[]; // An array of Reaction subdocuments
+  reactionCount: number; // A virtual property that represents the number of reactions
 }
 
+// Define the Thought schema
 const thoughts = new Schema<IThought>(
   {
     thoughtText: {
       type: String,
-      required: [true, 'Thought text required'],
+      required: [true, "Thought text required"],
       minLength: 1,
       maxLength: 280,
     },
     createdAt: {
       type: Date,
-      default: Date.now,
-      get: (value: Date) => new Date(value.toLocaleString()),
+      default: Date.now, // Default to the current date and time
+      get: (value: Date) => new Date(value.toLocaleString()), // Use a getter to format the date
     },
     username: {
-      type: Schema.Types.ObjectId,
-      ref: 'user',
-      required: [true, 'Username required'],
+      type: Schema.Types.ObjectId, // Reference to another document by ObjectId
+      ref: "user", // Reference the User collection
+      required: [true, "Username required"],
     },
+    // Array of Reaction subdocuments
     reactions: [reaction],
   },
   {
     toJSON: {
-      virtuals: true,
-      getters: true,
+      virtuals: true, // Include virtual properties when the schema is converted to JSON
+      getters: true, // Enable getters when converting to JSON
     },
-    id: false,
+    id: false, // Disable the creation of a duplicate `id` field
   }
 );
+// Define a virtual property 'reactionCount' to calculate the number of reactions
+thoughts.virtual("reactionCount").get(function () {
+  return this.reactions.length;
+});
 
-thoughts
-  .virtual('reactionCount')
-  .get(function () {
-    return this.reactions.length;
-  });
-
-const Thought = model('thoughts', thoughts);
+// Create a Mongoose model named 'thoughts' based on the Thought schema
+const Thought = model("thoughts", thoughts);
 
 export default Thought;
