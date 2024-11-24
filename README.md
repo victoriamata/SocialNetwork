@@ -20,8 +20,8 @@ You can clone this repository onto your local computer. Run the command "npm ins
 ## Usage:
 
 API endpoints can be tested using Insomnia.
-Click on the video link to watch a demo.
-**Link to video**
+
+[**Click here to view demo!**](https://drive.google.com/file/d/1x7LKTmtA59Dk7CPG4USqbOXdqlyoA8xv/view?usp=sharing)
 
 ![](./assets/screenshot.png)
 
