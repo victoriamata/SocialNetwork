@@ -19,7 +19,7 @@ You can clone this repository onto your local computer. Run the command "npm ins
 
 ## Usage:
 
-API routes can be tested using Insomnia.
+API endpoints can be tested using Insomnia.
 Click on the video link to watch a demo.
 **Link to video**
 

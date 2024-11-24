@@ -18,7 +18,10 @@ export const getUsers = async (_req: Request, res: Response) => {
 export const getSingleUser = async (req: Request, res: Response) => {
   try {
     // Find the user by ID, excluding the "__v" field
-    const user = await User.findOne({ _id: req.params.userId }).select("-__v");
+    const user = await User.findOne({ _id: req.params.userId })
+      .populate("friends")
+      .populate("thoughts")
+      .select("-__v");
 
     // If the user is not found, return a 404 error
     if (!user) {
@@ -42,6 +45,7 @@ export const createUser = async (req: Request, res: Response) => {
     res.json(dbUserData);
   } catch (err) {
     // Handle server error
+    console.error(err);
     res.status(500).json(err);
   }
 };
@@ -91,26 +95,30 @@ export const deleteUser = async (req: Request, res: Response) => {
 // Add a friend to a user's friend list
 export const createFriend = async (req: Request, res: Response) => {
   try {
-    // Find a user by their email and update their data with the request body
-    const friend = await User.findOneAndUpdate(
+    // the friend's user and email that will be entered in the req.body
+    const person2 = await User.findOneAndUpdate(
       { email: req.body.email },
       req.body
     );
+    // the person adding the friend 
+    // their id will be in the req params
+    // this person shows an increased friendCount
+    const person1 = await User.findByIdAndUpdate(
+      req.params.userId,
+      { $push: { friends: person2 } },
+      { new: true }
+    );
 
-    // If the user is not found, return a 404 error
-    if (!friend) {
-      res.status(404).json({ message: "User not found by ID" });
-    } else {
-      // Send the updated user data as a JSON response
-      res.status(200).json(friend);
-    }
+    // successful response if added correctly
+    res.status(200).json(person1);
+    // Handle error
   } catch (err) {
-    // Handle server error
     res.status(500).json(err);
   }
 };
 
 // Remove a friend from a user's friend list
+// [person 2's id will need to be in req.params]
 export const deleteFriend = async (req: Request, res: Response) => {
   try {
     // Find the friend to remove by their ID

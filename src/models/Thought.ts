@@ -1,13 +1,12 @@
 import { Schema, model, Document } from "mongoose";
-import reaction from "./Reaction.js";
+import Reaction from "./Reaction.js";
 
 // Define the TypeScript interface for a Thought document, extending Mongoose's Document
 interface IThought extends Document {
   thoughtText: String;
   createdAt: Date;
   username: Schema.Types.ObjectId; // Reference to the user who created the thought
-  reactions: (typeof reaction)[]; // An array of Reaction subdocuments
-  reactionCount: number; // A virtual property that represents the number of reactions
+  reactions: typeof Reaction[]; // An array of Reaction subdocuments
 }
 
 // Define the Thought schema
@@ -30,7 +29,7 @@ const thoughts = new Schema<IThought>(
       required: [true, "Username required"],
     },
     // Array of Reaction subdocuments
-    reactions: [reaction],
+    reactions: [Reaction],
   },
   {
     toJSON: {

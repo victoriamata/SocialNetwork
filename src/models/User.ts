@@ -6,7 +6,6 @@ interface IUser extends Document {
   email: String;
   thoughts: Schema.Types.ObjectId[]; // Array references user's thoughts
   friends: Schema.Types.ObjectId[]; // Array references user's friends
-  friendCount: number; // Virtual property representing the number of friends
 }
 
 // Define user schema
@@ -22,7 +21,7 @@ const userSchema = new Schema<IUser>(
       type: String,
       required: [true, "Email required"],
       unique: true,
-      match: [/.+@.+\..+/], //Regex; validates format
+      match: [/.+@.+\..+/, 'Enter valid email'], //Regex; validates format
     },
     thoughts: [
       {
@@ -41,7 +40,7 @@ const userSchema = new Schema<IUser>(
     toJSON: {
       virtuals: true, // Include virtual properties when converting the schema to JSON
     },
-    _id: false, // Exclude the automatic _id field
+    id: false, // Exclude the automatic id field
   }
 );
 

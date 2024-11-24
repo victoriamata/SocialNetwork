@@ -42,7 +42,10 @@ export const createThought = async (req: Request, res: Response) => {
     // Find the user by the username provided in the request body
     const user = await User.findOne({ username: req.body.username });
     // Create a new thought with the data from the request body
-    const thought = await Thought.create(req.body);
+    const thought = await Thought.create({
+      thoughtText: req.body.thoughtText,
+      username: user?._id,
+    });
 
     // If the user doesn't exist, return a 404 error
     if (!user) {
@@ -50,19 +53,17 @@ export const createThought = async (req: Request, res: Response) => {
     }
 
     // Add the thought's ID to the user's thoughts array
-    await User.findOneAndUpdate(
-      { username: req.body.username },
+    await User.findByIdAndUpdate(
+      user._id,
       { $addToSet: { thoughts: thought._id } },
       { new: true }
     );
 
     // Send a success message
-    res.json("Thought successfully created");
-    return;
+    res.status(201).json("Thought successfully created");
   } catch (err) {
     res.status(500).json(err);
   }
-
   return;
 };
 
@@ -155,9 +156,9 @@ export const removeThoughtReaction = async (req: Request, res: Response) => {
   try {
     // Find the thought by ID and remove the reaction by reaction ID
     const thought = await Thought.findOneAndUpdate(
-      { _id: req.params.thoughtsId },
+      { 'reactions.reactionId': req.params.reactionId },
       { $pull: { reactions: { reactionId: req.params.reactionId } } },
-      { runValidators: true, new: true }
+        { runValidators: true, new: true }
     );
 
     // If the thought doesn't exist, return a 404 error
