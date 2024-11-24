@@ -17,12 +17,17 @@
 
    Screenshots of this app:
   ![](./assets/screenshot.png)
-  
+
    ## License: 
    [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
    [Click to read more!](https://opensource.org/licenses/MIT)
-   ## Contributing:
-   Victoria Mata
+   ## Contributing: 
+   * Create a feature branch using "git checkout -b *branchname*" in your terminal. 
+   * After making your changes, type in the command "git commit -m "*detailed message on added features*".
+   * Push changes to your feature branch using "git push origin *branchname*". 
+   * Finally, create a pull request on Github for those changes to be merged. 
+
+Contributions are appreciated😊!
    ## Tests:
    N/A
    ## Questions:
