@@ -1,5 +1,5 @@
-import reaction from './Reaction';
-import Thought from './Thought';
-import User from './User';
+import Reaction from './Reaction.js';
+import Thought from './Thought.js';
+import User from './User.js';
 
-export { reaction, Thought, User };
+export { Reaction, Thought, User };
